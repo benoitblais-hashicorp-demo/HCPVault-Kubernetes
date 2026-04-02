@@ -75,7 +75,7 @@ resource "vault_policy" "hcp_workspace" {
     }
 
     path "sys/mounts/*" {
-      capabilities = ["create", "read", "update", "delete", "list"]
+      capabilities = ["create", "read", "update", "delete", "list", "sudo"]
     }
 
     path "sys/auth" {
@@ -83,7 +83,7 @@ resource "vault_policy" "hcp_workspace" {
     }
 
     path "sys/auth/*" {
-      capabilities = ["create", "read", "update", "delete", "list"]
+      capabilities = ["create", "read", "update", "delete", "list", "sudo"]
     }
 
     path "sys/policies/acl" {
