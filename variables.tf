@@ -1,10 +1,17 @@
-variable "hcp_jwt_bound_claim_value" {
+variable "hcp_jwt_stack_name" {
   type        = string
-  description = "(Required) The claim value from the HCP Terraform workload identity JWT that is authorized to configure demo access in the child Vault namespace for the Kubernetes integration demonstration."
+  description = "(Optional) The HCP Terraform Stack name to bind to the Vault role. Setting this enables the JWT backend."
+  default     = ""
+}
+
+variable "hcp_jwt_bound_claims_type" {
+  type        = string
+  description = "(Optional) Type of bound claims matching for the Vault JWT role. Use 'glob' to allow wildcard matching (useful for Stacks)."
+  default     = "glob"
 
   validation {
-    condition     = length(trimspace(var.hcp_jwt_bound_claim_value)) > 0
-    error_message = "``hcp_jwt_bound_claim_value`` must not be empty."
+    condition     = contains(["string", "glob"], var.hcp_jwt_bound_claims_type)
+    error_message = "`hcp_jwt_bound_claims_type` must be either \"string\" or \"glob\"."
   }
 }
 
@@ -57,21 +64,6 @@ variable "hcp_jwt_backend_path" {
   }
 }
 
-variable "hcp_jwt_bound_claim_name" {
-  type        = string
-  description = "(Optional) Name of the JWT claim used to bind the HCP Terraform workload identity to the Vault role."
-  default     = "terraform_workspace_name"
-
-  validation {
-    condition     = length(trimspace(var.hcp_jwt_bound_claim_name)) > 0
-    error_message = "``hcp_jwt_bound_claim_name`` must not be empty."
-  }
-
-  validation {
-    condition     = can(regex("^[a-zA-Z0-9_]+$", var.hcp_jwt_bound_claim_name))
-    error_message = "``hcp_jwt_bound_claim_name`` must contain only \"letters\", \"numbers\", and \"underscore (_)\"."
-  }
-}
 
 variable "hcp_jwt_bound_issuer" {
   type        = string
@@ -97,11 +89,11 @@ variable "hcp_jwt_discovery_url" {
 
 variable "hcp_jwt_entity_alias_name" {
   type        = string
-  description = "(Optional) Explicit Vault identity alias name for the HCP Terraform workload identity. When null, the value of ``hcp_jwt_bound_claim_value`` is used."
-  default     = null
+  description = "(Optional) Explicit Vault identity alias name for the HCP Terraform workload identity."
+  default     = "hcp-terraform"
 
   validation {
-    condition     = var.hcp_jwt_entity_alias_name == null || length(trimspace(var.hcp_jwt_entity_alias_name)) > 0
+    condition     = length(trimspace(var.hcp_jwt_entity_alias_name)) > 0
     error_message = "``hcp_jwt_entity_alias_name`` must not be an empty string when set."
   }
 }
