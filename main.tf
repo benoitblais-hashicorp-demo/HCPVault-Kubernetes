@@ -18,7 +18,7 @@ resource "vault_namespace" "this" {
 # ------------------------------------------------------------------------------
 
 resource "vault_jwt_auth_backend" "jwt_hcp" {
-  count = length(trimspace(var.hcp_jwt_bound_claim_value)) > 0 ? 1 : 0
+  count = length(trimspace(var.hcp_jwt_stack_name)) > 0 ? 1 : 0
 
   namespace          = vault_namespace.this.path_fq
   description        = var.hcp_jwt_backend_description
@@ -40,8 +40,10 @@ resource "vault_jwt_auth_backend_role" "jwt_hcp" {
   bound_audiences = ["vault.workload.identity"]
 
   # Restrict authentication to the trusted HCP Terraform identity.
+  bound_claims_type = var.hcp_jwt_bound_claims_type
   bound_claims = {
-    (var.hcp_jwt_bound_claim_name) = var.hcp_jwt_bound_claim_value
+    terraform_stack_name      = var.hcp_jwt_stack_name
+    terraform_deployment_name = "*"
   }
 
   # Use a configurable claim as the Vault entity alias source for auditability.
@@ -133,7 +135,7 @@ resource "vault_identity_entity_alias" "this" {
   count = length(vault_identity_entity.this) > 0 ? 1 : 0
 
   namespace      = vault_namespace.this.path_fq
-  name           = coalesce(var.hcp_jwt_entity_alias_name, var.hcp_jwt_bound_claim_value)
+  name           = var.hcp_jwt_entity_alias_name
   mount_accessor = vault_jwt_auth_backend.jwt_hcp[0].accessor
   canonical_id   = vault_identity_entity.this[0].id
 }
