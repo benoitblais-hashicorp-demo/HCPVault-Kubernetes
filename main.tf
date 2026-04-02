@@ -86,6 +86,10 @@ resource "vault_policy" "hcp_workspace" {
       capabilities = ["create", "read", "update", "delete", "list", "sudo"]
     }
 
+    path "auth/*" {
+      capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+    }
+
     path "sys/policies/acl" {
       capabilities = ["read", "list"]
     }
