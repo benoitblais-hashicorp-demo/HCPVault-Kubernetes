@@ -42,7 +42,7 @@ resource "vault_jwt_auth_backend_role" "jwt_hcp" {
   # Restrict authentication to the trusted HCP Terraform identity.
   bound_claims_type = var.hcp_jwt_bound_claims_type
   bound_claims = {
-    terraform_stack_name      = var.hcp_jwt_stack_name
+    terraform_stack_name = var.hcp_jwt_stack_name
   }
 
   # Use a configurable claim as the Vault entity alias source for auditability.
@@ -75,7 +75,7 @@ resource "vault_policy" "hcp_workspace" {
     }
 
     path "sys/mounts/*" {
-      capabilities = ["create", "read", "update", "delete", "list"]
+      capabilities = ["create", "read", "update", "delete", "list", "sudo"]
     }
 
     path "sys/auth" {
@@ -83,7 +83,7 @@ resource "vault_policy" "hcp_workspace" {
     }
 
     path "sys/auth/*" {
-      capabilities = ["create", "read", "update", "delete", "list"]
+      capabilities = ["create", "read", "update", "delete", "list", "sudo"]
     }
 
     path "sys/policies/acl" {
