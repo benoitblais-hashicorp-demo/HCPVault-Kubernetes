@@ -93,13 +93,7 @@ No modules.
 
 ## Required Inputs
 
-The following input variables are required:
-
-### <a name="input_hcp_jwt_bound_claim_value"></a> [hcp\_jwt\_bound\_claim\_value](#input\_hcp\_jwt\_bound\_claim\_value)
-
-Description: (Required) The claim value from the HCP Terraform workload identity JWT that is authorized to configure demo access in the child Vault namespace for the Kubernetes integration demonstration.
-
-Type: `string`
+No required inputs.
 
 ## Optional Inputs
 
@@ -137,13 +131,13 @@ Type: `string`
 
 Default: `"jwt_hcp"`
 
-### <a name="input_hcp_jwt_bound_claim_name"></a> [hcp\_jwt\_bound\_claim\_name](#input\_hcp\_jwt\_bound\_claim\_name)
+### <a name="input_hcp_jwt_bound_claims_type"></a> [hcp\_jwt\_bound\_claims\_type](#input\_hcp\_jwt\_bound\_claims\_type)
 
-Description: (Optional) Name of the JWT claim used to bind the HCP Terraform workload identity to the Vault role.
+Description: (Optional) Type of bound claims matching for the Vault JWT role. Use 'glob' to allow wildcard matching (useful for Stacks).
 
 Type: `string`
 
-Default: `"terraform_workspace_name"`
+Default: `"glob"`
 
 ### <a name="input_hcp_jwt_bound_issuer"></a> [hcp\_jwt\_bound\_issuer](#input\_hcp\_jwt\_bound\_issuer)
 
@@ -163,11 +157,11 @@ Default: `"https://app.terraform.io"`
 
 ### <a name="input_hcp_jwt_entity_alias_name"></a> [hcp\_jwt\_entity\_alias\_name](#input\_hcp\_jwt\_entity\_alias\_name)
 
-Description: (Optional) Explicit Vault identity alias name for the HCP Terraform workload identity. When null, the value of `hcp_jwt_bound_claim_value` is used.
+Description: (Optional) Explicit Vault identity alias name for the HCP Terraform workload identity.
 
 Type: `string`
 
-Default: `null`
+Default: `"hcp-terraform"`
 
 ### <a name="input_hcp_jwt_role_name"></a> [hcp\_jwt\_role\_name](#input\_hcp\_jwt\_role\_name)
 
@@ -176,6 +170,14 @@ Description: (Optional) Name of the Vault JWT role used by the HCP Terraform wor
 Type: `string`
 
 Default: `"jwt_hcp_role"`
+
+### <a name="input_hcp_jwt_stack_name"></a> [hcp\_jwt\_stack\_name](#input\_hcp\_jwt\_stack\_name)
+
+Description: (Optional) The HCP Terraform Stack name to bind to the Vault role. Setting this enables the JWT backend.
+
+Type: `string`
+
+Default: `""`
 
 ### <a name="input_hcp_jwt_token_max_ttl"></a> [hcp\_jwt\_token\_max\_ttl](#input\_hcp\_jwt\_token\_max\_ttl)
 
@@ -199,7 +201,7 @@ Description: (Optional) JWT claim used as the Vault entity alias source for audi
 
 Type: `string`
 
-Default: `"terraform_workspace_name"`
+Default: `"terraform_stack_name"`
 
 ### <a name="input_namespace_path"></a> [namespace\_path](#input\_namespace\_path)
 

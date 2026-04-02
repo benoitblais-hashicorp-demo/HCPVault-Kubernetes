@@ -144,7 +144,7 @@ variable "hcp_jwt_token_ttl" {
 variable "hcp_jwt_user_claim" {
   type        = string
   description = "(Optional) JWT claim used as the Vault entity alias source for auditability."
-  default     = "terraform_workspace_name"
+  default     = "terraform_stack_name"
 
   validation {
     condition     = length(trimspace(var.hcp_jwt_user_claim)) > 0
